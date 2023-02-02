@@ -64,17 +64,12 @@ def parse_fs_routes(app: Flask, rootdir: str, routedict: dict, parent: str='/') 
 			print(f"{index} or {index_html} not found!")
 			return False
 
-		bare_handler = lambda _: open(index_html, 'r').read()
+		handler = lambda: open(index_html, 'r').read()
+		handler.__name__ = f"{parent}_handler"
 		
-		handler = appbind(
-			bare_handler,
-			app,
-			f"{parent}_handler"
-		)
-
 		routedict[parent] = {
 			"config": config,
-			"handler": dill.dumps(bare_handler)
+			"statichtml": handler()
 		}
 
 		app.route(parent, **config)(handler)

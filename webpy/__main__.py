@@ -21,7 +21,7 @@ def build():
 	prerules = list(app.url_map.iter_rules())
 
 	# TODO: use TypedDict for this
-	routes: dict[str, dict[str, Union[dict[str, str], bytes]]] = {}
+	routes: dict[str, dict[str, Union[dict[str, str], bytes, str]]] = {}
 
 	if not parse_fs_routes(app, "root", routes):
 		exit(1)
@@ -80,6 +80,15 @@ app.add_url_rule(
 
 		for route, routeobj in routes.items():
 			config, handler = routeobj.values()
+
+			if routeobj.get("statichtml") is not None:
+				f.write(
+					f"app.route({route!r}, **{config})"
+					f"(webpy.appbind(lambda _: {handler!r}, "
+					f"app, {route+'_handler'!r}))\n"
+				)
+
+				continue
 			
 			f.write(
 				f"app.route({route!r}, **{config})"
