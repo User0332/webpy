@@ -1,6 +1,8 @@
 import os
 import json
-from flask import Flask, render_template
+import dill
+from . import appbind
+from flask import Flask
 from functools import partial
 
 ROUTE_FUNCS = {}
@@ -21,7 +23,7 @@ def modularize(file: str):
 	return mod
 	
 
-def parse_fs_routes(app: Flask, rootdir: str, parent: str='/') -> bool:
+def parse_fs_routes(app: Flask, rootdir: str, routedict: dict, parent: str='/') -> bool:
 	conf = f"{rootdir}/config.json"
 	index = f"{rootdir}/index.py"
 	index_html = f"{rootdir}/index.html"
@@ -32,6 +34,7 @@ def parse_fs_routes(app: Flask, rootdir: str, parent: str='/') -> bool:
 			except json.decoder.JSONDecodeError:
 				print(f"{conf} is invaliZd!")
 				return False
+	else: config = {}
 
 	if os.path.exists(index):
 		try:
@@ -41,30 +44,46 @@ def parse_fs_routes(app: Flask, rootdir: str, parent: str='/') -> bool:
 			return False
 
 		if not hasattr(index, "handler"):
-			print(f"{index} is missing a respond function!")
+			print(f"{index} is missing a handler function!")
 			return False
 
-		handler = partial(index.handler, app)
-		handler.__name__ = f"{parent}_handler"
+		handler = appbind(
+			index.handler,
+			app,
+			f"{parent}_handler"
+		)
+
+		routedict[parent] = {
+			"config": config,
+			"handler": dill.dumps(index.handler)
+		}
 
 		app.route(parent, **config)(handler)
 	else:
 		if not os.path.exists(index_html):
 			print(f"{index} or {index_html} not found!")
 			return False
+
+		bare_handler = lambda _: open(index_html, 'r').read()
 		
-		handler = partial(
-			lambda fname: open(fname, 'r').read(), 
-			index_html
+		handler = appbind(
+			bare_handler,
+			app,
+			f"{parent}_handler"
 		)
-		handler.__name__ = f"{parent}_handler"
+
+		routedict[parent] = {
+			"config": config,
+			"handler": dill.dumps(bare_handler)
+		}
 
 		app.route(parent, **config)(handler)
+
 
 	for subdir in os.listdir(rootdir):
 		sub_qual = f"{rootdir}/{subdir}"
 		if os.path.isdir(sub_qual):
-			if not parse_fs_routes(app, sub_qual, f"{parent}{subdir}/"):
+			if not parse_fs_routes(app, sub_qual, routedict, f"{parent}{subdir}/"):
 				return False
 
 	return True
