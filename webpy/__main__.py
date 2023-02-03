@@ -3,6 +3,7 @@ import dill
 from .fs_routes import parse_fs_routes
 from flask import Flask
 from py_compile import compile
+from python_minifier import minify
 from json import load, dumps
 from shutil import rmtree
 from sys import argv
@@ -29,10 +30,11 @@ def build():
 	host, port = conf.get("host", "127.0.0.1"), conf.get("port", 5000)
 
 	with open("build.py", 'w') as f:
+		code = ""
 		for module in conf.get("imports", tuple()):
-			f.write(f"import {module}\n")
+			code+=f"import {module}\n"
 
-		f.write(
+		code+=(
 			f"""import dill
 import datetime
 import webpy
@@ -58,7 +60,7 @@ app.config = {app.config.copy()}
 		for rule in prerules:
 			if rule.endpoint == "static": continue
 			
-			f.write(
+			code+=(
 				f"""
 app.add_url_rule(
 	{rule.rule!r}, 
@@ -82,7 +84,7 @@ app.add_url_rule(
 			config, handler = routeobj.values()
 
 			if routeobj.get("statichtml") is not None:
-				f.write(
+				code+=(
 					f"app.route({route!r}, **{config})"
 					f"(webpy.appbind(lambda _: {handler!r}, "
 					f"app, {route+'_handler'!r}))\n"
@@ -90,13 +92,15 @@ app.add_url_rule(
 
 				continue
 			
-			f.write(
+			code+=(
 				f"app.route({route!r}, **{config})"
 				f"(webpy.appbind(dill.loads({handler!r}), "
 				f"app, {route+'_handler'!r}))\n"
 			)
 
-		f.write(f"app.run({host!r}, {port!r})")
+		code+=(f"app.run({host!r}, {port!r})")
+
+		f.write(minify(code, rename_globals=True))
 
 def run():
 	conf = {}
