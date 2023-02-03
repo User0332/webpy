@@ -9,6 +9,7 @@ from shutil import rmtree
 from sys import argv
 from importlib import import_module
 from typing import Union
+from types import FunctionType
 
 def build():
 	conf = {}
@@ -17,7 +18,9 @@ def build():
 		with open("config.json", 'r') as f:
 			conf: dict = load(f)
 
-	app: Flask = import_module("app").app
+	appmod = import_module("app")
+	app: Flask = appmod.app
+	setup: FunctionType = appmod.webpy_setup
 
 	prerules = list(app.url_map.iter_rules())
 
@@ -36,7 +39,6 @@ def build():
 
 		code+=(
 			f"""import dill
-import datetime
 import webpy
 from flask import Flask
 
@@ -53,7 +55,7 @@ app = Flask(
 	{app.root_path!r}
 )
 
-app.config = {app.config.copy()}
+dill.loads({dill.dumps(setup)!r})(app)
 """
 		)
 
@@ -109,9 +111,13 @@ def run():
 		with open("config.json", 'r') as f:
 			conf: dict = load(f)
 
-	app: Flask = import_module("app").app
+	appmod = import_module("app")
+	app: Flask = appmod.app
+	setup: FunctionType = appmod.webpy_setup
 
 	routes = {}
+
+	setup(app)
 
 	if not parse_fs_routes(app, "root", routes):
 		exit(1)
@@ -136,7 +142,10 @@ def new():
 
 	defaultcode = """from flask import Flask
 
-app = Flask(__name__, template_folder="html")"""
+app = Flask(__name__, template_folder="html")
+
+def webpy_setup(app: Flask):
+	app.debug = True"""
 
 	os.mkdir(name)
 
