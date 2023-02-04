@@ -9,9 +9,12 @@ from shutil import rmtree
 from sys import argv
 from importlib import import_module
 from typing import Union
+from subprocess import call as subproc_call
 from types import FunctionType
 
 def build():
+	buildpyx()
+
 	conf = {}
 
 	if os.path.exists("config.json"):
@@ -105,6 +108,8 @@ app.add_url_rule(
 		f.write(minify(code, rename_globals=True))
 
 def run():
+	buildpyx()
+
 	conf = {}
 
 	if os.path.exists("config.json"):
@@ -223,6 +228,19 @@ def webpy_compile():
 	try: os.remove("build.py")
 	except FileNotFoundError: pass
 
+def buildpyx():
+	shell = ["powershell"] if os.name == "nt" else ["bash", "-c"]
+
+	for path, directories, files in os.walk(os.getcwd()):
+		for file in files:
+			file: str
+			if file.endswith(".pyx"):
+				actual =  os.path.join(path, file)
+
+				subproc_call(
+					[*shell, "pyxc", actual]
+				)
+
 if len(argv) < 2: argv.append('')
 
 defaultroutecode = """import webpy
@@ -258,6 +276,10 @@ if argv[1] == "route":
 
 if argv[1] == "compile":
 	webpy_compile()
+	exit(0)
+
+if argv[1] == "buildpyx":
+	buildpyx()
 	exit(0)
 
 print(f"Invalid command {repr(argv[1]) if argv[1] else '<none>'}")
