@@ -283,4 +283,4 @@ if argv[1] == "buildpyx":
 	exit(0)
 
 print(f"Invalid command {repr(argv[1]) if argv[1] else '<none>'}")
-print("Possible commands:\n- webpy new {projectname}\n- webpy route {routename}\n- webpy run\n- webpy build\n- webpy compile")
+print("Possible commands:\n- webpy new {projectname}\n- webpy route {routename}\n- webpy run\n- webpy build\n- webpy compile\n- webpy buildpyx")
