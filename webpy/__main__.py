@@ -42,7 +42,7 @@ def build():
 
 		code+=(
 			f"""import dill
-import webpy
+from webpy import appbind
 from flask import Flask
 
 app = Flask(
@@ -85,21 +85,23 @@ app.add_url_rule(
 """
 			)
 
+		code+="route = app.route\n"
+
 		for route, routeobj in routes.items():
 			config, handler = routeobj.values()
 
 			if routeobj.get("statichtml") is not None:
 				code+=(
-					f"app.route({route!r}, **{config})"
-					f"(webpy.appbind(lambda _: {handler!r}, "
+					f"route({route!r}, **{config})"
+					f"(appbind(lambda _: {handler!r}, "
 					f"app, {route+'_handler'!r}))\n"
 				)
 
 				continue
 			
 			code+=(
-				f"app.route({route!r}, **{config})"
-				f"(webpy.appbind(dill.loads({handler!r}), "
+				f"route({route!r}, **{config})"
+				f"(appbind(dill.loads({handler!r}), "
 				f"app, {route+'_handler'!r}))\n"
 			)
 
