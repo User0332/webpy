@@ -3,7 +3,6 @@ import json
 import dill
 from . import appbind
 from flask import Flask
-from functools import partial
 
 ROUTE_FUNCS = {}
 

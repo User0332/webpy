@@ -1,3 +1,18 @@
+Metadata-Version: 2.1
+Name: webpy
+Version: 1.0.0
+Summary: Easy-to-use Python web framework built on top of Flask
+Author-email: User0332 <carlzfurtado@gmail.com>
+Project-URL: Homepage, https://github.com/User0332/webpy
+Keywords: framework,flask,web
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Text Processing :: Markup :: HTML
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+
 # WebPy
 
 A web framework built on top of Flask that allows you to add filesystem routes (in the `root/` folder of your project directory).

@@ -33,15 +33,13 @@ def build():
 	if not parse_fs_routes(app, "root", routes):
 		exit(1)
 
-	host, port = conf.get("host", "127.0.0.1"), conf.get("port", 5000)
-
 	with open("build.py", 'w') as f:
 		code = ""
 		for module in conf.get("imports", tuple()):
 			code+=f"import {module}\n"
 
 		code+=(
-			f"""import dill
+			f"""from dill import loads
 from webpy import appbind
 from flask import Flask
 
@@ -58,7 +56,7 @@ app = Flask(
 	{app.root_path!r}
 )
 
-dill.loads({dill.dumps(setup)!r})(app)
+loads({dill.dumps(setup)!r})(app)
 """
 		)
 
@@ -92,7 +90,7 @@ app.add_url_rule(
 
 			if routeobj.get("statichtml") is not None:
 				code+=(
-					f"route({route!r}, **{config})"
+					f"route({route!r}, {','.join(f'{key}={value!r}' for key, value in config.items())})"
 					f"(appbind(lambda _: {handler!r}, "
 					f"app, {route+'_handler'!r}))\n"
 				)
@@ -100,12 +98,12 @@ app.add_url_rule(
 				continue
 			
 			code+=(
-				f"route({route!r}, **{config})"
-				f"(appbind(dill.loads({handler!r}), "
+				f"route({route!r}, {','.join(f'{key}={value!r}' for key, value in config.items())})"
+				f"(appbind(loads({handler!r}), "
 				f"app, {route+'_handler'!r}))\n"
 			)
 
-		code+=(f"app.run({host!r}, {port!r})")
+		code+=(f"app.run({','.join(f'{key}={value!r}' for key, value in conf.items())})")
 
 		f.write(minify(code, rename_globals=True))
 
@@ -129,9 +127,7 @@ def run():
 	if not parse_fs_routes(app, "root", routes):
 		exit(1)
 
-	host, port = conf.get("host", "127.0.0.1"), conf.get("port", 5000)
-
-	app.run(host, port)
+	app.run(**conf)
 
 def new():
 	if len(argv) < 3:
@@ -147,11 +143,11 @@ def new():
 		"port": 5000
 	}
 
-	defaultcode = """from flask import Flask
+	defaultcode = """from webpy import App
 
-app = Flask(__name__, template_folder="html")
+app = App(__name__, template_folder="html")
 
-def webpy_setup(app: Flask):
+def webpy_setup(app: App):
 	app.debug = True"""
 
 	os.mkdir(name)
@@ -240,15 +236,14 @@ def buildpyx():
 				actual =  os.path.join(path, file)
 
 				subproc_call(
-					[*shell, "pyxc", actual]
+					[*shell, "pyxc", repr(actual)]
 				)
 
 if len(argv) < 2: argv.append('')
 
 defaultroutecode = """import webpy
-from flask import Flask
 
-def handler(app: Flask, *args):
+def handler(app: webpy.App, *args):
 	from flask import request
 	
 	document = webpy.documentify("index.html")
@@ -260,29 +255,33 @@ defaultrouteconf = {
 	"methods": ["GET"]
 }
 
-if argv[1] == "run":
-	run()
-	exit(0)
+def main():
+	if argv[1] == "run":
+		run()
+		exit(0)
 
-if argv[1] == "build":
-	build()
-	exit(0)
+	if argv[1] == "build":
+		build()
+		exit(0)
 
-if argv[1] == "new":
-	new()
-	exit(0)
+	if argv[1] == "new":
+		new()
+		exit(0)
 
-if argv[1] == "route":
-	route()
-	exit(0)
+	if argv[1] == "route":
+		route()
+		exit(0)
 
-if argv[1] == "compile":
-	webpy_compile()
-	exit(0)
+	if argv[1] == "compile":
+		webpy_compile()
+		exit(0)
 
-if argv[1] == "buildpyx":
-	buildpyx()
-	exit(0)
+	if argv[1] == "buildpyx":
+		buildpyx()
+		exit(0)
 
-print(f"Invalid command {repr(argv[1]) if argv[1] else '<none>'}")
-print("Possible commands:\n- webpy new {projectname}\n- webpy route {routename}\n- webpy run\n- webpy build\n- webpy compile\n- webpy buildpyx")
+	print(f"Invalid command {repr(argv[1]) if argv[1] else '<none>'}")
+	print("Possible commands:\n- webpy new {projectname}\n- webpy route {routename}\n- webpy run\n- webpy build\n- webpy compile\n- webpy buildpyx")
+
+if __name__ == "__main__":
+	main()
