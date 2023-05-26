@@ -1,0 +1,5 @@
+# Welcome to WebPy's documentation!
+
+WebPy is an easy-to-use Python web framework built on top of Flask that allows you to add filesystem routes and use a much more centralized `app` object.
+
+[Getting Started/Installation](getstarted.html)

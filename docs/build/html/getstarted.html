@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Getting Started &#8212; WebPy latest documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">¶</a></h1>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h2>
+<p>WebPy can be installed with <code class="docutils literal notranslate"><span class="pre">pip</span></code> using <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">webpy-framework</span></code>. For code that has not yet been published to PyPI (and therefore code that may not necessarily work), the newest form of WebPy can be installed from the repository using <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/User0332/webpy</span></code>. It requires at least Python 3.9, the version it was developed on.</p>
+</section>
+<section id="your-first-webpy-application">
+<h2>Your First WebPy Application<a class="headerlink" href="#your-first-webpy-application" title="Permalink to this heading">¶</a></h2>
+<p>Start with <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">new</span> <span class="pre">myfirstproject</span></code>. Then cd into the <code class="docutils literal notranslate"><span class="pre">myfirstproject</span></code> directory and open up your editor. It should look something like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">myfirstproject</span><span class="o">/</span>
+  <span class="n">html</span><span class="o">/</span>
+  <span class="n">root</span><span class="o">/</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">json</span>
+    <span class="n">index</span><span class="o">.</span><span class="n">py</span>
+  <span class="n">static</span><span class="o">/</span>
+    <span class="n">css</span><span class="o">/</span>
+      <span class="n">index</span><span class="o">.</span><span class="n">css</span>
+    <span class="n">images</span><span class="o">/</span>
+    <span class="n">js</span><span class="o">/</span>
+      <span class="n">index</span><span class="o">.</span><span class="n">js</span>
+
+  <span class="n">app</span><span class="o">.</span><span class="n">py</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">app.py</span></code> file should contain some boilerplate code. You can use the <code class="docutils literal notranslate"><span class="pre">app</span></code> object just like a normal Flask object! App configurations should be done inside the <code class="docutils literal notranslate"><span class="pre">webpy_setup</span></code> function. Route functions can still be created. The <code class="docutils literal notranslate"><span class="pre">config.json</span></code> file in the same directory as the <code class="docutils literal notranslate"><span class="pre">app.py</span></code> file configures how WebPy will run your app. It takes any arguments that are valid to pass to <code class="docutils literal notranslate"><span class="pre">app.run()</span></code>.</p>
+<p>Under <code class="docutils literal notranslate"><span class="pre">root/</span></code>, you can use <code class="docutils literal notranslate"><span class="pre">index.py</span></code> and <code class="docutils literal notranslate"><span class="pre">index.html</span></code> files to create filesystem-based webpage routes. If you use an <code class="docutils literal notranslate"><span class="pre">index.py</span></code> file, WebPy will call the <code class="docutils literal notranslate"><span class="pre">handler</span></code> function and pass the app as an argument. If you use <code class="docutils literal notranslate"><span class="pre">index.html</span></code>, WebPy will just return that HTML file to the requester. Each filesystem route has a <code class="docutils literal notranslate"><span class="pre">config.json</span></code> file. In this file, you can pass any keyword arguments that would be valid to pass to <code class="docutils literal notranslate"><span class="pre">app.route()</span></code>.</p>
+<p>Let’s create a new page at <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:5000/hello</span></code>. To do this, we can create a new folder called <code class="docutils literal notranslate"><span class="pre">hello/</span></code> under the <code class="docutils literal notranslate"><span class="pre">root/</span></code> folder. Cd into the <code class="docutils literal notranslate"><span class="pre">root/</span></code> directory and type <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">route</span> <span class="pre">hello</span></code>. WebPy will automatically create the <code class="docutils literal notranslate"><span class="pre">hello/</span></code> directory for you.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">myfirstproject</span><span class="o">/</span><span class="n">root</span><span class="o">/</span>
+  <span class="n">hello</span><span class="o">/</span>
+    <span class="n">index</span><span class="o">.</span><span class="n">py</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">json</span>
+
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>Since we only want this route to be a simple HTML page, we can delete <code class="docutils literal notranslate"><span class="pre">index.py</span></code> and replace it with an <code class="docutils literal notranslate"><span class="pre">index.html</span></code> file.</p>
+<p><code class="docutils literal notranslate"><span class="pre">index.html</span></code></p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+	<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+		<span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/static/css/index.css&quot;</span><span class="p">/&gt;</span>
+	<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+	<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+		<span class="p">&lt;</span><span class="nt">h1</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;heading&quot;</span><span class="p">&gt;</span>Hello, World!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+	<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Now, we can run our app using <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">run</span></code>. Notice that when visiting <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:5000/hello</span></code>, the CSS that we linked from the <code class="docutils literal notranslate"><span class="pre">static/</span></code> folder is included.</p>
+<p>If you want to make your app a little more compact, you can use <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">build</span></code>. This will compile all of your Python and HTML into a single minifed file, <code class="docutils literal notranslate"><span class="pre">build.py</span></code>, which can be run like a normal Python script. However, the the <code class="docutils literal notranslate"><span class="pre">html/</span></code> and <code class="docutils literal notranslate"><span class="pre">static/</span></code> directories are not packaged into the build file, so these must still be present to run <code class="docutils literal notranslate"><span class="pre">build.py</span></code>. When using <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">run</span></code> to run the app, changes in the files under <code class="docutils literal notranslate"><span class="pre">root/</span></code> and changes in files under <code class="docutils literal notranslate"><span class="pre">static/</span></code> are guaranteed to be reflected in the app without having to restart it, but if the app is being run from a <code class="docutils literal notranslate"><span class="pre">build.py</span></code> file, changes in HTML, Python, and config files under <code class="docutils literal notranslate"><span class="pre">root/</span></code> will not be reflected.</p>
+<p><a class="reference external" href="https://github.com/User0332/pyx">PyX</a> can also be integrated into WebPy apps by changing Python files to <code class="docutils literal notranslate"><span class="pre">.pyx</span></code> files. These files can be compiled to Python files using <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">buildpyx</span></code>, which is automatically run by the <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">compile</span></code>, and <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">run</span></code> commands. WebPy comes with PySite/PyX as a dependency. Note that one must still import PySite HTML tags in every file that PyX is used, as shown below:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">webpy.pysite_semantic_tags</span> <span class="kn">import</span> <span class="o">*</span> <span class="c1"># recommended</span>
+
+<span class="c1">### OR</span>
+
+<span class="kn">from</span> <span class="nn">pysite.tags</span> <span class="kn">import</span> <span class="o">*</span> <span class="c1"># also works, but doesn&#39;t filter out unnecessary classes such as Element</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">WebPy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Carl Furtado.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/getstarted.md.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
