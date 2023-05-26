@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'WebPy Framework'
+project = 'webpy-framework'
 copyright = '2023, Carl Furtado'
 author = 'Carl Furtado'
 release = 'latest'
@@ -14,10 +14,10 @@ release = 'latest'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = ["myst_parser"]
 
 templates_path = ['_templates']
-exclude_patterns = ["myst_parser"]
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 
 
