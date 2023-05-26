@@ -1,2 +1,0 @@
-[console_scripts]
-webpy = webpy.__main__:main
