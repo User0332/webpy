@@ -36,7 +36,7 @@ myfirstproject/
   config.json
 ```
 
-The `app.py` file should contain some boilerplate code. You can use the `app` object just like a normal Flask object!. App configurations should be done inside the `webpy_setup` function. Route functions can still be created. The `config.json` file in the same directory as the `app.py` file configures how WebPy will run your app. It takes any arguments that are valid to pass to `app.run()`
+The `app.py` file should contain some boilerplate code. You can use the `app` object just like a normal Flask object! App configurations should be done inside the `webpy_setup` function. Route functions can still be created. The `config.json` file in the same directory as the `app.py` file configures how WebPy will run your app. It takes any arguments that are valid to pass to `app.run()`
 
 
 Under `root/`, you can use `index.py` and `index.html` files to create filesystem-based webpage routes. If you use an `index.py` file, WebPy will call the `handler` function and pass the app as an argument. If you use `index.html`, WebPy will just return that HTML file to the requester. Each filesystem route has a `config.json` file. In this file, you can pass any keyword arguments that would be valid to pass to `app.route()`.
@@ -71,4 +71,7 @@ Now, we can run our app using `webpy run`. Notice that when visiting `http://127
 
 If you want to make your app a little more compact, you can use `webpy build`. This will compile all of your Python and HTML into a single minifed file, `build.py`, which can be run like a normal Python script. However, the the `html/` and `static/` directories are not packaged into the build file, so these must still be present to run `build.py`. When using `webpy run`, changes in the files under `root/` and changes in files under `static/` are guaranteed to be reflected in the app without having to restart it, but if the app is being run from a `build.py`, changes in HTML, Python, and config files under `root/` will not be reflected.
 
-[PyX](https://github.com/User0332/pyx) can also be integrated into WebPy apps by changing Python files to `.pyx` files. These files can be compiled to Python files using `webpy buildpyx`, which is automatically run by the `webpy build`, `webpy compile`, and `webpy run` commands. WebPy comes with PySite/PyX as a dependency.
+[PyX](https://github.com/User0332/pyx) can also be integrated into WebPy apps by changing Python files to `.pyx` files. These files can be compiled to Python files using `webpy buildpyx`, which is automatically run by the `webpy build`, `webpy compile`, and `webpy run` commands. WebPy comes with PySite/PyX as a dependency. Note that one must still import PySite HTML tags in every file that PyX is used, as shown below:
+```py
+from webpy.pysite_semantic_tags import *
+```
