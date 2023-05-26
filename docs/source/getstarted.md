@@ -1,7 +1,7 @@
 # Getting Started
 
 ## Installation
-WebPy can be installed with `pip` using `pip install webpy-framework`. For code that has not yet been published to PyPI (and therefore code that may not necessarily work), the newest form of WebPy can be installed from the repository using `pip install git+https://github.com/User0332/webpy`. It requires at least Python 3.9, the version it was developed on.
+WebPy can be installed with `pip` using `pip install webpy-framework`. For a version that has not yet been published to PyPI (and therefore a version that may not necessarily work), the newest form of WebPy can be installed from the repository using `pip install git+https://github.com/User0332/webpy`. It requires at least Python 3.9, the version it was developed on.
 
 ## Your First WebPy Application
 
