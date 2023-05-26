@@ -58,6 +58,8 @@ Now, we can run our app using `webpy run`. Notice that when visiting `http://127
 
 If you want to make your app a little more compact, you can use `webpy build`. This will compile all of your Python and HTML into a single minifed file, `build.py`, which can be run like a normal Python script. However, the the `html/` and `static/` directories are not packaged into the build file, so these must still be present to run `build.py`. When using `webpy run` to run the app, changes in the files under `root/` and changes in files under `static/` are guaranteed to be reflected in the app without having to restart it, but if the app is being run from a `build.py` file, changes in HTML, Python, and config files under `root/` will not be reflected.
 
+## Using PyX With WebPy
+
 [PyX](https://github.com/User0332/pyx) can also be integrated into WebPy apps by changing Python files to `.pyx` files. These files can be compiled to Python files using `webpy buildpyx`, which is automatically run by the `webpy build`, `webpy compile`, and `webpy run` commands. WebPy comes with PySite/PyX as a dependency. Note that one must still import PySite HTML tags in every file that PyX is used, as shown below:
 ```py
 from webpy.pysite_semantic_tags import * # recommended
