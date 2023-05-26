@@ -1,5 +1,6 @@
 import os
 import dill
+import sys
 from .fs_routes import parse_fs_routes
 from flask import Flask
 from py_compile import compile
@@ -21,9 +22,18 @@ def build():
 		with open("config.json", 'r') as f:
 			conf: dict = load(f)
 
-	appmod = import_module("app")
-	app: Flask = appmod.app
-	setup: FunctionType = appmod.webpy_setup
+	sys.path.insert(0, os.getcwd()) # this is needed in case the script was run without `python -m`
+	try: appmod = import_module("app")
+	except ModuleNotFoundError:
+		print("app.py file does not exist!")
+		exit(1)
+	
+	try:
+		app: Flask = appmod.app
+		setup: FunctionType = appmod.webpy_setup
+	except AttributeError:
+		print("app object and webpy_setup function are missing from app.py!")
+
 
 	prerules = list(app.url_map.iter_rules())
 
@@ -116,9 +126,18 @@ def run():
 		with open("config.json", 'r') as f:
 			conf: dict = load(f)
 
-	appmod = import_module("app")
-	app: Flask = appmod.app
-	setup: FunctionType = appmod.webpy_setup
+	sys.path.insert(0, os.getcwd()) # this is needed in case the script was run without `python -m`
+	try: appmod = import_module("app")
+	except ModuleNotFoundError:
+		print("app.py file does not exist!")
+		exit(1)
+	
+	try:
+		app: Flask = appmod.app
+		setup: FunctionType = appmod.webpy_setup
+	except AttributeError:
+		print("app object and webpy_setup function are missing from app.py!")
+
 
 	routes = {}
 
