@@ -19,3 +19,5 @@ HTML:
     </body>
 </html>
 ```
+
+Note that this currently uses the Python `markdown` library, which is limited and may not support all features (such as code blocks).
