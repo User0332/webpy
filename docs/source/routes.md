@@ -15,6 +15,9 @@ appdirectory/root/      [127.0.0.1:5000/]
   
 ```
 
+
+Every filesystem route comes with an index file and a config file. The `config.json` file contains only the property `"methods"` by default, but may contain any [options](https://flask.palletsprojects.com/en/2.3.x/api/?highlight=route%20options#flask.Flask.add_url_rule:~:text=options%20(t.Any)%20%E2%80%93%20Extra%20options%20passed%20to%20the%20Rule%20object.) that are valid to pass to `app.route()`.
+
 ### HTML
 
 To create a filesystem route that serves a static HTML file, use `webpy route` to create the route, delete the generated `index.py` file in the route directory, and replace it with `index.html`. Write your new HTML in `index.html`.
@@ -27,6 +30,10 @@ Imports from `flask` should typically be inside of the handler function. The Web
 ### PyX
 
 To create a programmed filesystem route that uses [PyX](https://github.com/User0332/pyx), you can again use the `webpy route` function, but this time rename `index.py` to `index.pyx`. WebPy will automatically compile all `.pyx` files to `.py` files before running. Don't forget to import PySite tags for PyX (see [Using PyX With WebPy](getstarted.md#using-pyx-with-webpy)).
+
+### Markdown
+
+As always, use `webpy route` to create the new route. Then replace `index.py` with an `index.md` file. This will be transpiled to an `index.html` file at runtime (see [Using Markdown With WebPy](markdown.md#using-markdown-with-webpy)).
 
 ## Flask Routes
 

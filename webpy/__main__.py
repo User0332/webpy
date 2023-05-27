@@ -12,9 +12,34 @@ from importlib import import_module
 from typing import Union
 from subprocess import call as subproc_call
 from types import FunctionType
+from markdown import markdown
+
+def buildmd():
+	for path, directories, files in os.walk(os.getcwd()):
+		for file in files:
+			file: str
+			if file.endswith(".md"):
+				actual =  os.path.join(path, file)
+				html = '\n\t\t'.join(
+					markdown(open(actual, 'r').read())
+					.splitlines()
+				)
+				
+
+				with open(actual.removesuffix(".md")+".html", 'w') as f:
+					f.write(
+						f"""<!DOCTYPE html>
+<html>
+	<head></head>
+	<body>
+		{html}
+	</body>
+</html>
+""")
 
 def build():
 	buildpyx()
+	buildmd()
 
 	conf = {}
 
@@ -119,6 +144,7 @@ app.add_url_rule(
 
 def run():
 	buildpyx()
+	buildmd()
 
 	conf = {}
 
@@ -299,8 +325,12 @@ def main():
 		buildpyx()
 		exit(0)
 
+	if argv[1] == "buildmd":
+		buildmd()
+		exit(0)
+
 	print(f"Invalid command {repr(argv[1]) if argv[1] else '<none>'}")
-	print("Possible commands:\n- webpy new {projectname}\n- webpy route {routename}\n- webpy run\n- webpy build\n- webpy compile\n- webpy buildpyx")
+	print("Possible commands:\n- webpy new {projectname}\n- webpy route {routename}\n- webpy run\n- webpy build\n- webpy compile\n- webpy buildpyx\n- webpy buildmd")
 
 if __name__ == "__main__":
 	main()

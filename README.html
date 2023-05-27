@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head></head>
+	<body>
+		<h1>WebPy</h1>
+<p>A web framework built on top of Flask that allows you to add filesystem routes (in the <code>root/</code> folder of your project directory). Install it with <code>pip install webpy-framework</code>.</p>
+<h2>Commands</h2>
+<h3>Creating your project</h3>
+<ul>
+<li><code>webpy new {proj-name}</code> - Create a new project</li>
+<li><code>webpy route {route-name}</code> - Create a new filesystem route (this must be under <code>root/</code>)</li>
+</ul>
+<h3>Deploying your project</h3>
+<ul>
+<li><code>webpy run</code> - Run this in the project dir to start your app using Flask</li>
+<li><code>webpy build</code> - Package the program into a <code>build.py</code> file</li>
+<li><code>webpy compile</code> - Package the program into a <code>build.pyc</code> file</li>
+<li><code>webpy buildpyx</code> - Compile the <code>.pyx</code> files into <code>.py</code> files -- automatically runs through the <code>build</code>, <code>compile</code>, and <code>run</code> commands</li>
+</ul>
+<p>WebPy allows developers to use just a minimal amount of Python (the bare minimum needed) for their web apps while also allowing for the full functionality of Flask. Take a look at <a href="https://github.com/User0332/webpy-app/">webpy-app</a> for example, where the majority of the codebase is HTML and JS while still allowing Flask to be fully utilized. WebPy web servers can also be compiled to standalone exectuables by compiling the output of <code>webpy build</code> with a tool such as Nuitka.</p>
+<h3>Your First WebPy Application</h3>
+<p>Start with <code>webpy new myfirstproject</code>. Then cd into the <code>myfirstproject</code> directory and open up your editor. It should look something like this:
+```
+myfirstproject/
+  html/
+  root/
+    config.json
+    index.py
+  static/
+    css/
+      index.css
+    images/
+    js/
+      index.js</p>
+<p>app.py
+  config.json
+```</p>
+<p>The <code>app.py</code> file should contain some boilerplate code. You can use the <code>app</code> object just like a normal Flask object! App configurations should be done inside the <code>webpy_setup</code> function. Route functions can still be created. The <code>config.json</code> file in the same directory as the <code>app.py</code> file configures how WebPy will run your app. It takes any arguments that are valid to pass to <code>app.run()</code>.</p>
+<p>Under <code>root/</code>, you can use <code>index.py</code> and <code>index.html</code> files to create filesystem-based webpage routes. If you use an <code>index.py</code> file, WebPy will call the <code>handler</code> function and pass the app as an argument. If you use <code>index.html</code>, WebPy will just return that HTML file to the requester. Each filesystem route has a <code>config.json</code> file. In this file, you can pass any keyword arguments that would be valid to pass to <code>app.route()</code>.</p>
+<p>Let's create a new page at <code>http://127.0.0.1:5000/hello</code>. To do this, we can create a new folder called <code>hello/</code> under the <code>root/</code> folder. Cd into the <code>root/</code> directory and type <code>webpy route hello</code>. WebPy will automatically create the <code>hello/</code> directory for you.</p>
+<p>```
+myfirstproject/root/
+  hello/
+    index.py
+    config.json</p>
+<p>...
+```</p>
+<p>Since we only want this route to be a simple HTML page, we can delete <code>index.py</code> and replace it with an <code>index.html</code> file.</p>
+<p><code>index.html</code>
+```html</p>
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/css/index.css"/>
+    </head>
+    <body>
+        <h1 id="heading">Hello, World!</h1>
+    </body>
+</html>
+<p>```</p>
+<p>Now, we can run our app using <code>webpy run</code>. Notice that when visiting <code>http://127.0.0.1:5000/hello</code>, the CSS that we linked from the <code>static/</code> folder is included.</p>
+<p>If you want to make your app a little more compact, you can use <code>webpy build</code>. This will compile all of your Python and HTML into a single minifed file, <code>build.py</code>, which can be run like a normal Python script. However, the the <code>html/</code> and <code>static/</code> directories are not packaged into the build file, so these must still be present to run <code>build.py</code>. When using <code>webpy run</code> to run the app, changes in the files under <code>root/</code> and changes in files under <code>static/</code> are guaranteed to be reflected in the app without having to restart it, but if the app is being run from a <code>build.py</code> file, changes in HTML, Python, and config files under <code>root/</code> will not be reflected.</p>
+<p><a href="https://github.com/User0332/pyx">PyX</a> can also be integrated into WebPy apps by changing Python files to <code>.pyx</code> files. These files can be compiled to Python files using <code>webpy buildpyx</code>, which is automatically run by the <code>webpy build</code>, <code>webpy compile</code>, and <code>webpy run</code> commands. WebPy comes with PySite/PyX as a dependency. Note that one must still import PySite HTML tags in every file that PyX is used, as shown below:
+```py
+from webpy.pysite_semantic_tags import * # recommended</p>
+<h3>OR</h3>
+<p>from pysite.tags import * # also works, but doesn't filter out unnecessary classes such as Element
+```</p>
+	</body>
+</html>
