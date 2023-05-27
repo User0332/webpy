@@ -1,23 +1,9 @@
-# WebPy
+# Getting Started
 
-A web framework built on top of Flask that allows you to add filesystem routes (in the `root/` folder of your project directory). Install it with `pip install webpy-framework`. Docs are located [here](https://webpy-framework.readthedocs.io/).
+## Installation
+WebPy can be installed with `pip` using `pip install webpy-framework`. For a version that has not yet been published to PyPI (and therefore a version that may not necessarily work), the newest form of WebPy can be installed from the repository using `pip install git+https://github.com/User0332/webpy`. It requires at least Python 3.9, the version it was developed on.
 
-## Commands
-
-### Creating your project
-- `webpy new {proj-name}` - Create a new project
-- `webpy route {route-name}` - Create a new filesystem route (this must be under `root/`)
-
-### Deploying your project
-- `webpy run` - Run this in the project dir to start your app using Flask
-- `webpy build` - Package the program into a `build.py` file
-- `webpy compile` - Package the program into a `build.pyc` file
-- `webpy buildpyx` - Compile the `.pyx` files into `.py` files -- automatically runs through the `build`, `compile`, and `run` commands
-- `webpy buildmd` - Transpile all Markdown files to HTML
-
-WebPy allows developers to use just a minimal amount of Python (the bare minimum needed) for their web apps while also allowing for the full functionality of Flask. Take a look at [webpy-app](https://github.com/User0332/webpy-app/) for example, where the majority of the codebase is HTML and JS while still allowing Flask to be fully utilized. WebPy web servers can also be compiled to standalone exectuables by compiling the output of `webpy build` with a tool such as Nuitka.
-
-### Your First WebPy Application
+## Your First WebPy Application
 
 Start with `webpy new myfirstproject`. Then cd into the `myfirstproject` directory and open up your editor. It should look something like this:
 ```
@@ -71,6 +57,8 @@ Since we only want this route to be a simple HTML page, we can delete `index.py`
 Now, we can run our app using `webpy run`. Notice that when visiting `http://127.0.0.1:5000/hello`, the CSS that we linked from the `static/` folder is included.
 
 If you want to make your app a little more compact, you can use `webpy build`. This will compile all of your Python and HTML into a single minifed file, `build.py`, which can be run like a normal Python script. However, the the `html/` and `static/` directories are not packaged into the build file, so these must still be present to run `build.py`. When using `webpy run` to run the app, changes in the files under `root/` and changes in files under `static/` are guaranteed to be reflected in the app without having to restart it, but if the app is being run from a `build.py` file, changes in HTML, Python, and config files under `root/` will not be reflected.
+
+## Using PyX With WebPy
 
 [PyX](https://github.com/User0332/pyx) can also be integrated into WebPy apps by changing Python files to `.pyx` files. These files can be compiled to Python files using `webpy buildpyx`, which is automatically run by the `webpy build`, `webpy compile`, and `webpy run` commands. WebPy comes with PySite/PyX as a dependency. Note that one must still import PySite HTML tags in every file that PyX is used, as shown below:
 ```py

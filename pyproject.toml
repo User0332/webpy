@@ -32,6 +32,7 @@ requires-python = ">= 3.9"
 
 [project.urls]
 Homepage = "https://github.com/User0332/webpy"
+Documentation = "https://webpy-framework.readthedocs.io/"
 
 [project.scripts]
 webpy = "webpy.__main__:main"
