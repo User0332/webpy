@@ -1,5 +1,8 @@
 # WebPy Command Line
 
+
+## Commands
+
 Running the command `webpy` will output a list of commands for the current version. Currently, the commands are: 
 
 - `webpy new {proj-name}` - Create a new project with name `proj-name`
@@ -9,3 +12,11 @@ Running the command `webpy` will output a list of commands for the current versi
 - `webpy compile` - Package the program into a `build.pyc` file
 - `webpy buildpyx` - Compile the `.pyx` files into `.py` files -- automatically runs through the `build`, `compile`, and `run` commands
 - `webpy buildmd` - Transpile all Markdown files to HTML
+
+## Options
+
+- `--no-compile-md` - Do not transpile Markdown to HTML when running/building
+- `--no-compile-pyx` - Do not transpile PyX to Python when running/building
+- `--no-reload-md` - When running the app, do not re-transpile Markdown files if changes are detected (this is auto-set if `--no-compile-md` is set)
+- `--no-reload-md` - When running the app, do not re-transpile PyX files if changes are detected (this is auto-set if `--no-compile-pyx` is set)
+- `--force-debug` - Force the application to use debug mode when running/building

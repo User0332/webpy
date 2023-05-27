@@ -91,4 +91,4 @@ HTML:
 </html>
 ```
 
-Note that this currently uses the Python `markdown` library, which is limited and may not support all features (such as code blocks).
+This feature currently uses the Python `marko` library, which supports CommonMark spec v0.30 (the latest version).

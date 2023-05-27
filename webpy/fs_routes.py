@@ -22,7 +22,7 @@ def modularize(file: str):
 	return mod
 	
 
-def parse_fs_routes(app: Flask, rootdir: str, routedict: dict, parent: str='/') -> bool:
+def parse_fs_routes(app: Flask, rootdir: str, routedict: dict, watchfiles: dict[str, int], parent: str='/') -> bool:
 	conf = f"{rootdir}/config.json"
 	index = f"{rootdir}/index.py"
 	index_html = f"{rootdir}/index.html"
@@ -36,6 +36,7 @@ def parse_fs_routes(app: Flask, rootdir: str, routedict: dict, parent: str='/') 
 	else: config = {}
 
 	if os.path.exists(index):
+		watchfiles[index] = os.stat(index).st_mtime
 		try:
 			index = modularize(index)
 		except Exception as e:
@@ -77,7 +78,7 @@ def parse_fs_routes(app: Flask, rootdir: str, routedict: dict, parent: str='/') 
 	for subdir in os.listdir(rootdir):
 		sub_qual = f"{rootdir}/{subdir}"
 		if os.path.isdir(sub_qual):
-			if not parse_fs_routes(app, sub_qual, routedict, f"{parent}{subdir}/"):
+			if not parse_fs_routes(app, sub_qual, routedict, watchfiles, f"{parent}{subdir}/"):
 				return False
 
 	return True
