@@ -33,7 +33,7 @@ To create a programmed filesystem route that uses [PyX](https://github.com/User0
 
 ### Markdown
 
-As always, use `webpy route` to create the new route. Then replace `index.py` with an `index.md` file. This will be transpiled to an `index.html` file at runtime (see [Using Markdown With WebPy](markdown.md#using-markdown-with-webpy)).
+As always, use `webpy route` to create the new route. Then replace `index.py` with an `index.md` file. This will be transpiled to an `index.html` file at runtime (see [Using Markdown With WebPy](getstarted.md#using-markdown-with-webpy)).
 
 ## Flask Routes
 
