@@ -9,7 +9,7 @@
 project = 'WebPy'
 copyright = '2023, Carl Furtado'
 author = 'Carl Furtado'
-release = 'latest'
+release = '1.0.2'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
