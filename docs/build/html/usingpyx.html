@@ -18,7 +18,9 @@
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using Markdown With WebPy" href="usingmd.html" />
+    <link rel="prev" title="Debug Reloading" href="debugreloading.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,11 +43,18 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="getstarted.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="routes.html">Application Routes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">WebPy Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="debugreloading.html">Debug Reloading</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using PyX With WebPy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pyx-snippets">PyX Snippets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-pyx-integration">Example PyX Integration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usingmd.html">Using Markdown With WebPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docsref.html">Docs Reference</a></li>
 </ul>
 
         </div>
@@ -84,14 +93,83 @@
 </div>
 <section id="pyx-snippets">
 <h2>PyX Snippets<a class="headerlink" href="#pyx-snippets" title="Permalink to this heading"></a></h2>
-<p>PyX snippets can also be imported from <code class="docutils literal notranslate"><span class="pre">webpy.pyx_snippets</span></code>. Currently, the only snippet available is <code class="docutils literal notranslate"><span class="pre">theme</span></code>, which takes in one attribute name of <code class="docutils literal notranslate"><span class="pre">name={theme-name}</span></code>. These themes are fetched from <a class="reference external" href="https://github.com/User0332/User0332.github.io/tree/main/webpy/themes">User0332.github.io/tree/main/webpy/themes</a>.</p>
+<p>PyX snippets can also be imported from <code class="docutils literal notranslate"><span class="pre">webpy.pyx_snippets</span></code>. Currently, the only snippet available is <code class="docutils literal notranslate"><span class="pre">theme</span></code>, which takes in one attribute name of <code class="docutils literal notranslate"><span class="pre">name={theme-name}</span></code>. These themes are CSS and JavaScript files fetched from <a class="reference external" href="https://github.com/User0332/User0332.github.io/tree/main/webpy/themes">User0332.github.io/tree/main/webpy/themes</a>. Including the <code class="docutils literal notranslate"><span class="pre">theme</span></code> tag in your PyX document just fetches and links the associated <code class="docutils literal notranslate"><span class="pre">.css</span></code> and <code class="docutils literal notranslate"><span class="pre">.js</span></code> files.</p>
+</section>
+<section id="example-pyx-integration">
+<h2>Example PyX Integration<a class="headerlink" href="#example-pyx-integration" title="Permalink to this heading"></a></h2>
+<p>Start by renaming the <code class="docutils literal notranslate"><span class="pre">index.py</span></code> file in your route to <code class="docutils literal notranslate"><span class="pre">index.pyx</span></code>. Then, you can write your PyX document just like you would write it in PySite. Let’s start by adding our boilerplate.</p>
+<p><code class="docutils literal notranslate"><span class="pre">index.pyx</span></code></p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">webpy</span>
+<span class="kn">from</span> <span class="nn">webpy.pysite_semantic_tags</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">webpy</span><span class="o">.</span><span class="n">App</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="n">pyx</span><span class="o">&gt;</span>
+
+    <span class="o">&lt;/</span><span class="n">pyx</span><span class="o">&gt;</span>
+  <span class="p">)</span><span class="o">.</span><span class="n">html</span>
+</pre></div>
+</div>
+<p>Then, lets add an <code class="docutils literal notranslate"><span class="pre">h1</span></code>, a <code class="docutils literal notranslate"><span class="pre">button</span></code>, and a <code class="docutils literal notranslate"><span class="pre">p</span></code> tag.</p>
+<p><code class="docutils literal notranslate"><span class="pre">index.pyx</span></code></p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span>import webpy
+from webpy.pysite_semantic_tags import *
+
+def handler(app: webpy.App, *args):
+  return (
+    &lt;pyx&gt;
++       &lt;h1&gt;Welcome to my site!&lt;/h1&gt;
++       &lt;p&gt;This site was built using WebPy!&lt;/p&gt;
++       &lt;button onclick=&quot;alert(&#39;hello there!&#39;)&quot;&gt;&lt;h3&gt;Click Me!&lt;/h3&gt;&lt;/button&gt;
+    &lt;/pyx&gt;
+  ).html
+</pre></div>
+</div>
+<p>Run the app using <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">run</span></code> and visit your route. Right now, the page doesn’t look too good, but we can make it look much better with only a couple of lines of code.</p>
+<p>We can do this by using WebPy PyX theme snippets. Import the <code class="docutils literal notranslate"><span class="pre">theme</span></code> snippet from <code class="docutils literal notranslate"><span class="pre">webpy.pyx_snippets</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">index.pyx</span></code></p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span>import webpy
+from webpy.pysite_semantic_tags import *
++ from webpy.pyx_snippets import theme
+
+def handler(app: webpy.App, *args):
+  return (
+    &lt;pyx&gt;
+        &lt;h1&gt;Welcome to my site!&lt;/h1&gt;
+        &lt;p&gt;This site was built using WebPy!&lt;/p&gt;
+        &lt;button onclick=&quot;alert(&#39;hello there!&#39;)&quot;&gt;&lt;h3&gt;Click Me!&lt;/h3&gt;&lt;/button&gt;
+    &lt;/pyx&gt;
+  ).html
+</pre></div>
+</div>
+<p>Then, add the <code class="docutils literal notranslate"><span class="pre">theme</span></code> tag at the top of your document and give it a theme name. For now, we’ll use the <code class="docutils literal notranslate"><span class="pre">webpy-bluepurple</span></code> theme.</p>
+<p><code class="docutils literal notranslate"><span class="pre">index.pyx</span></code></p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span>import webpy
+from webpy.pysite_semantic_tags import *
+from webpy.pyx_snippets import theme
+
+def handler(app: webpy.App, *args):
+  return (
+    &lt;pyx&gt;
++       &lt;theme name=&quot;webpy-bluepurple&quot;&gt;&lt;/theme&gt;
+        &lt;h1&gt;Welcome to my site!&lt;/h1&gt;
+        &lt;p&gt;This site was built using WebPy!&lt;/p&gt;
+        &lt;button onclick=&quot;alert(&#39;hello there!&#39;)&quot;&gt;&lt;h3&gt;Click Me!&lt;/h3&gt;&lt;/button&gt;
+    &lt;/pyx&gt;
+  ).html
+</pre></div>
+</div>
+<p>Run your app with the themes applied! Read more about the theme snippet <a class="reference internal" href="#pyx-snippets"><span class="xref myst">here</span></a>.</p>
 </section>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="debugreloading.html" class="btn btn-neutral float-left" title="Debug Reloading" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usingmd.html" class="btn btn-neutral float-right" title="Using Markdown With WebPy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

@@ -58,6 +58,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">WebPy Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="debugreloading.html">Debug Reloading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingpyx.html">Using PyX With WebPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingmd.html">Using Markdown With WebPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docsref.html">Docs Reference</a></li>
 </ul>
 
         </div>
@@ -110,11 +113,11 @@ All imports from Flask that use request-specific variables, such as <code class=
 </section>
 <section id="pyx">
 <h3>PyX<a class="headerlink" href="#pyx" title="Permalink to this heading"></a></h3>
-<p>To create a programmed filesystem route that uses <a class="reference external" href="https://github.com/User0332/pyx">PyX</a>, you can again use the <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">route</span></code> function, but this time rename <code class="docutils literal notranslate"><span class="pre">index.py</span></code> to <code class="docutils literal notranslate"><span class="pre">index.pyx</span></code>. WebPy will automatically compile all <code class="docutils literal notranslate"><span class="pre">.pyx</span></code> files to <code class="docutils literal notranslate"><span class="pre">.py</span></code> files before running. Don’t forget to import PySite tags for PyX (see <a class="reference internal" href="usingmd.html#using-markdown-with-webpy"><span class="std std-ref">Using PyX With WebPy</span></a>).</p>
+<p>To create a programmed filesystem route that uses <a class="reference external" href="https://github.com/User0332/pyx">PyX</a>, you can again use the <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">route</span></code> function, but this time rename <code class="docutils literal notranslate"><span class="pre">index.py</span></code> to <code class="docutils literal notranslate"><span class="pre">index.pyx</span></code>. WebPy will automatically compile all <code class="docutils literal notranslate"><span class="pre">.pyx</span></code> files to <code class="docutils literal notranslate"><span class="pre">.py</span></code> files before running. Don’t forget to import PySite tags for PyX (see <a class="reference internal" href="usingpyx.html#using-pyx-with-webpy"><span class="std std-ref">Using PyX With WebPy</span></a>).</p>
 </section>
 <section id="markdown">
 <h3>Markdown<a class="headerlink" href="#markdown" title="Permalink to this heading"></a></h3>
-<p>As always, use <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">route</span></code> to create the new route. Then replace <code class="docutils literal notranslate"><span class="pre">index.py</span></code> with an <code class="docutils literal notranslate"><span class="pre">index.md</span></code> file. This will be transpiled to an <code class="docutils literal notranslate"><span class="pre">index.html</span></code> file at runtime (see <a class="reference internal" href="usingpyx.html#using-pyx-with-webpy"><span class="std std-ref">Using Markdown With WebPy</span></a>).</p>
+<p>As always, use <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">route</span></code> to create the new route. Then replace <code class="docutils literal notranslate"><span class="pre">index.py</span></code> with an <code class="docutils literal notranslate"><span class="pre">index.md</span></code> file. This will be transpiled to an <code class="docutils literal notranslate"><span class="pre">index.html</span></code> file at runtime (see <a class="reference internal" href="usingmd.html#using-markdown-with-webpy"><span class="std std-ref">Using Markdown With WebPy</span></a>).</p>
 </section>
 </section>
 <section id="flask-routes">
