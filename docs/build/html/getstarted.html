@@ -19,6 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Application Routes" href="routes.html" />
     <link rel="prev" title="Welcome to WebPy’s documentation!" href="index.html" /> 
 </head>
 
@@ -48,6 +49,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#your-first-webpy-application">Your First WebPy Application</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="routes.html">Application Routes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">WebPy Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugreloading.html">Debug Reloading</a></li>
 </ul>
 
         </div>
@@ -78,7 +82,7 @@
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h1>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
-<p>WebPy can be installed with <code class="docutils literal notranslate"><span class="pre">pip</span></code> using <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">webpy-framework</span></code>. For code that has not yet been published to PyPI (and therefore code that may not necessarily work), the newest form of WebPy can be installed from the repository using <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/User0332/webpy</span></code>. It requires at least Python 3.9, the version it was developed on.</p>
+<p>WebPy can be installed with <code class="docutils literal notranslate"><span class="pre">pip</span></code> using <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">webpy-framework</span></code>. For a version that has not yet been published to PyPI (and therefore a version that may not necessarily work), the newest form of WebPy can be installed from the repository using <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/User0332/webpy</span></code>. It requires at least Python 3.9, the version it was developed on.</p>
 </section>
 <section id="your-first-webpy-application">
 <h2>Your First WebPy Application<a class="headerlink" href="#your-first-webpy-application" title="Permalink to this heading"></a></h2>
@@ -125,14 +129,36 @@
 </div>
 <p>Now, we can run our app using <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">run</span></code>. Notice that when visiting <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:5000/hello</span></code>, the CSS that we linked from the <code class="docutils literal notranslate"><span class="pre">static/</span></code> folder is included.</p>
 <p>If you want to make your app a little more compact, you can use <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">build</span></code>. This will compile all of your Python and HTML into a single minifed file, <code class="docutils literal notranslate"><span class="pre">build.py</span></code>, which can be run like a normal Python script. However, the the <code class="docutils literal notranslate"><span class="pre">html/</span></code> and <code class="docutils literal notranslate"><span class="pre">static/</span></code> directories are not packaged into the build file, so these must still be present to run <code class="docutils literal notranslate"><span class="pre">build.py</span></code>. When using <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">run</span></code> to run the app, changes in the files under <code class="docutils literal notranslate"><span class="pre">root/</span></code> and changes in files under <code class="docutils literal notranslate"><span class="pre">static/</span></code> are guaranteed to be reflected in the app without having to restart it, but if the app is being run from a <code class="docutils literal notranslate"><span class="pre">build.py</span></code> file, changes in HTML, Python, and config files under <code class="docutils literal notranslate"><span class="pre">root/</span></code> will not be reflected.</p>
-<p><a class="reference external" href="https://github.com/User0332/pyx">PyX</a> can also be integrated into WebPy apps by changing Python files to <code class="docutils literal notranslate"><span class="pre">.pyx</span></code> files. These files can be compiled to Python files using <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">buildpyx</span></code>, which is automatically run by the <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">compile</span></code>, and <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">run</span></code> commands. WebPy comes with PySite/PyX as a dependency. Note that one must still import PySite HTML tags in every file that PyX is used, as shown below:</p>
-<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">webpy.pysite_semantic_tags</span> <span class="kn">import</span> <span class="o">*</span> <span class="c1"># recommended</span>
+<p>Lets modify our default route under <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:5000/</span></code>, in the directory <code class="docutils literal notranslate"><span class="pre">root/</span></code>. This time, we’ll keep <code class="docutils literal notranslate"><span class="pre">index.py</span></code> and program this route in Python. The default code should look something like this:</p>
+<p><code class="docutils literal notranslate"><span class="pre">index.py</span></code></p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">webpy</span>
 
-<span class="c1">### OR</span>
+<span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">webpy</span><span class="o">.</span><span class="n">App</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+	<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">request</span>
+	
+	<span class="n">document</span> <span class="o">=</span> <span class="n">webpy</span><span class="o">.</span><span class="n">documentify</span><span class="p">(</span><span class="s2">&quot;index.html&quot;</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">pysite.tags</span> <span class="kn">import</span> <span class="o">*</span> <span class="c1"># also works, but doesn&#39;t filter out unnecessary classes such as Element</span>
+	<span class="k">return</span> <span class="n">document</span><span class="o">.</span><span class="n">_stringify</span><span class="p">()</span>
 </pre></div>
 </div>
+<p>Right now, the code reads <code class="docutils literal notranslate"><span class="pre">index.html</span></code> from the <code class="docutils literal notranslate"><span class="pre">html/</span></code> folder and turns it into a document object using <a class="reference external" href="https://github.com/User0332/domapi"><code class="docutils literal notranslate"><span class="pre">domapi</span></code></a>. It then returns the string form of the document. However, the <code class="docutils literal notranslate"><span class="pre">handler()</span></code> function that we see here can return strings and <code class="docutils literal notranslate"><span class="pre">flask.Response</span></code> objects too (see <a class="reference internal" href="routes.html#python"><span class="std std-ref">Python routes</span></a>). Let’s start with a simple example and use a string.</p>
+<p>First, delete the default route code.</p>
+<p><code class="docutils literal notranslate"><span class="pre">index.py</span></code></p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">webpy</span>
+
+<span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">webpy</span><span class="o">.</span><span class="n">App</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+  <span class="k">pass</span>
+</pre></div>
+</div>
+<p>Then, return a string of HTML from the function.</p>
+<p><code class="docutils literal notranslate"><span class="pre">index.py</span></code></p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">webpy</span>
+
+<span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">webpy</span><span class="o">.</span><span class="n">App</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+  <span class="k">return</span> <span class="s2">&quot;&lt;h1&gt;Hello, World!&lt;/h1&gt;&quot;</span>
+</pre></div>
+</div>
+<p>Start the app again using <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">run</span></code>, and we can see our <code class="docutils literal notranslate"><span class="pre">h1</span></code> show up on <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:5000/</span></code>. For more information on how you can use programmed routes, visit the <a class="reference external" href="https://flask.palletsprojects.com/en/2.3.x/quickstart/">Flask documentation</a> or take a look at some <a class="reference external" href="https://github.com/User0332/webpy-app/tree/master/root">examples</a>.</p>
 </section>
 </section>
 
@@ -141,6 +167,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Welcome to WebPy’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="routes.html" class="btn btn-neutral float-right" title="Application Routes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

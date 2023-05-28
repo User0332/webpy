@@ -58,39 +58,40 @@ Now, we can run our app using `webpy run`. Notice that when visiting `http://127
 
 If you want to make your app a little more compact, you can use `webpy build`. This will compile all of your Python and HTML into a single minifed file, `build.py`, which can be run like a normal Python script. However, the the `html/` and `static/` directories are not packaged into the build file, so these must still be present to run `build.py`. When using `webpy run` to run the app, changes in the files under `root/` and changes in files under `static/` are guaranteed to be reflected in the app without having to restart it, but if the app is being run from a `build.py` file, changes in HTML, Python, and config files under `root/` will not be reflected.
 
-## Using PyX With WebPy
+Lets modify our default route under `http://127.0.0.1:5000/`, in the directory `root/`. This time, we'll keep `index.py` and program this route in Python. The default code should look something like this:
 
-[PyX](https://github.com/User0332/pyx) can also be integrated into WebPy apps by changing Python files to `.pyx` files. These files can be compiled to Python files using `webpy buildpyx`, which is automatically run by the `webpy build`, `webpy compile`, and `webpy run` commands. WebPy comes with PySite/PyX as a dependency. Note that one must still import PySite HTML tags in every file that PyX is used, as shown below:
+`index.py`
 ```py
-from webpy.pysite_semantic_tags import * # recommended
+import webpy
 
-### OR
+def handler(app: webpy.App, *args):
+	from flask import request
+	
+	document = webpy.documentify("index.html")
 
-from pysite.tags import * # also works, but doesn't filter out unnecessary classes such as Element
+	return document._stringify()
 ```
 
-PyX snippets can also be imported from `webpy.pyx_snippets`. Currently, the only snippet available is `theme`, which takes in one attribute name of `name={theme-name}`. These themes are fetched from [User0332.github.io/tree/main/webpy/themes](https://github.com/User0332/User0332.github.io/tree/main/webpy/themes).
+Right now, the code reads `index.html` from the `html/` folder and turns it into a document object using [`domapi`](https://github.com/User0332/domapi). It then returns the string form of the document. However, the `handler()` function that we see here can return strings and `flask.Response` objects too (see [Python routes](routes.md#python)). Let's start with a simple example and use a string.
 
-## Using Markdown With WebPy
+First, delete the default route code.
 
-Markdown written in `.md` files anywhere in the project are transpiled to `.html` files before running or building the project. They can also be transpiled using `webpy buildmd`. This means that Markdown can even be used in the `html/` directory and accessed as an HTML template. Markdown is placed in the body of the generated HTML document, so it will look something like this:
+`index.py`
+```py
+import webpy
 
-Markdown:
-```md
-# My Heading
+def handler(app: webpy.App, *args):
+  pass
 ```
 
-HTML:
-```html
-<!DOCTYPE html>
+Then, return a string of HTML from the function.
 
-<html>
-    <head></head>
+`index.py`
+```py
+import webpy
 
-    <body>
-        <h1>My Heading</h1>
-    </body>
-</html>
+def handler(app: webpy.App, *args):
+  return "<h1>Hello, World!</h1>"
 ```
 
-This feature currently uses the Python `marko` library, which supports CommonMark spec v0.30 (the latest version).
+Start the app again using `webpy run`, and we can see our `h1` show up on `http://127.0.0.1:5000/`. For more information on how you can use programmed routes, visit the [Flask documentation](https://flask.palletsprojects.com/en/2.3.x/quickstart/) or take a look at some [examples](https://github.com/User0332/webpy-app/tree/master/root).

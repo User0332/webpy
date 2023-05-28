@@ -29,11 +29,11 @@ All imports from Flask that use request-specific variables, such as `request` an
 
 ### PyX
 
-To create a programmed filesystem route that uses [PyX](https://github.com/User0332/pyx), you can again use the `webpy route` function, but this time rename `index.py` to `index.pyx`. WebPy will automatically compile all `.pyx` files to `.py` files before running. Don't forget to import PySite tags for PyX (see [Using PyX With WebPy](usingpyx.md#using-pyx-with-webpy)).
+To create a programmed filesystem route that uses [PyX](https://github.com/User0332/pyx), you can again use the `webpy route` function, but this time rename `index.py` to `index.pyx`. WebPy will automatically compile all `.pyx` files to `.py` files before running. Don't forget to import PySite tags for PyX (see [Using PyX With WebPy](usingmd.md#using-markdown-with-webpy)).
 
 ### Markdown
 
-As always, use `webpy route` to create the new route. Then replace `index.py` with an `index.md` file. This will be transpiled to an `index.html` file at runtime (see [Using Markdown With WebPy](usingmd.md#using-markdown-with-webpy)).
+As always, use `webpy route` to create the new route. Then replace `index.py` with an `index.md` file. This will be transpiled to an `index.html` file at runtime (see [Using Markdown With WebPy](usingpyx.md#using-pyx-with-webpy)).
 
 ## Flask Routes
 

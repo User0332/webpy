@@ -1,7 +1,7 @@
 # Getting Started
 
 ## Installation
-WebPy can be installed with `pip` using `pip install webpy-framework`. For code that has not yet been published to PyPI (and therefore code that may not necessarily work), the newest form of WebPy can be installed from the repository using `pip install git+https://github.com/User0332/webpy`. It requires at least Python 3.9, the version it was developed on.
+WebPy can be installed with `pip` using `pip install webpy-framework`. For a version that has not yet been published to PyPI (and therefore a version that may not necessarily work), the newest form of WebPy can be installed from the repository using `pip install git+https://github.com/User0332/webpy`. It requires at least Python 3.9, the version it was developed on.
 
 ## Your First WebPy Application
 
@@ -58,11 +58,40 @@ Now, we can run our app using `webpy run`. Notice that when visiting `http://127
 
 If you want to make your app a little more compact, you can use `webpy build`. This will compile all of your Python and HTML into a single minifed file, `build.py`, which can be run like a normal Python script. However, the the `html/` and `static/` directories are not packaged into the build file, so these must still be present to run `build.py`. When using `webpy run` to run the app, changes in the files under `root/` and changes in files under `static/` are guaranteed to be reflected in the app without having to restart it, but if the app is being run from a `build.py` file, changes in HTML, Python, and config files under `root/` will not be reflected.
 
-[PyX](https://github.com/User0332/pyx) can also be integrated into WebPy apps by changing Python files to `.pyx` files. These files can be compiled to Python files using `webpy buildpyx`, which is automatically run by the `webpy build`, `webpy compile`, and `webpy run` commands. WebPy comes with PySite/PyX as a dependency. Note that one must still import PySite HTML tags in every file that PyX is used, as shown below:
+Lets modify our default route under `http://127.0.0.1:5000/`, in the directory `root/`. This time, we'll keep `index.py` and program this route in Python. The default code should look something like this:
+
+`index.py`
 ```py
-from webpy.pysite_semantic_tags import * # recommended
+import webpy
 
-### OR
+def handler(app: webpy.App, *args):
+	from flask import request
+	
+	document = webpy.documentify("index.html")
 
-from pysite.tags import * # also works, but doesn't filter out unnecessary classes such as Element
+	return document._stringify()
 ```
+
+Right now, the code reads `index.html` from the `html/` folder and turns it into a document object using [`domapi`](https://github.com/User0332/domapi). It then returns the string form of the document. However, the `handler()` function that we see here can return strings and `flask.Response` objects too (see [Python routes](routes.md#python)). Let's start with a simple example and use a string.
+
+First, delete the default route code.
+
+`index.py`
+```py
+import webpy
+
+def handler(app: webpy.App, *args):
+  pass
+```
+
+Then, return a string of HTML from the function.
+
+`index.py`
+```py
+import webpy
+
+def handler(app: webpy.App, *args):
+  return "<h1>Hello, World!</h1>"
+```
+
+Start the app again using `webpy run`, and we can see our `h1` show up on `http://127.0.0.1:5000/`. For more information on how you can use programmed routes, visit the [Flask documentation](https://flask.palletsprojects.com/en/2.3.x/quickstart/) or take a look at some [examples](https://github.com/User0332/webpy-app/tree/master/root).

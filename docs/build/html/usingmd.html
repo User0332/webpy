@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Search &mdash; WebPy latest documentation</title>
+  <title>Using Markdown With WebPy &mdash; WebPy latest documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-    
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -17,10 +17,8 @@
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
-    <script src="_static/searchtools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -35,7 +33,7 @@
             WebPy
           </a>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -48,8 +46,6 @@
 <li class="toctree-l1"><a class="reference internal" href="routes.html">Application Routes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">WebPy Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="debugreloading.html">Debug Reloading</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usingpyx.html">Using PyX With WebPy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usingmd.html">Using Markdown With WebPy</a></li>
 </ul>
 
         </div>
@@ -66,8 +62,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Search</li>
+      <li class="breadcrumb-item active">Using Markdown With WebPy</li>
       <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usingmd.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -75,18 +72,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search functionality.
-    </p>
-  </div>
-  </noscript>
+  <section id="using-markdown-with-webpy">
+<h1>Using Markdown With WebPy<a class="headerlink" href="#using-markdown-with-webpy" title="Permalink to this heading"></a></h1>
+<p>Markdown written in <code class="docutils literal notranslate"><span class="pre">.md</span></code> files anywhere in the project are transpiled to <code class="docutils literal notranslate"><span class="pre">.html</span></code> files before running or building the project. They can also be transpiled using <code class="docutils literal notranslate"><span class="pre">webpy</span> <span class="pre">buildmd</span></code>. This means that Markdown can even be used in the <code class="docutils literal notranslate"><span class="pre">html/</span></code> directory and accessed as an HTML template. Markdown is placed in the body of the generated HTML document, so it will look something like this:</p>
+<p>Markdown:</p>
+<div class="highlight-md notranslate"><div class="highlight"><pre><span></span><span class="gh"># My Heading</span>
+</pre></div>
+</div>
+<p>HTML:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
 
-  
-  <div id="search-results">
-  
-  </div>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>My Heading<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>This feature currently uses the Python <code class="docutils literal notranslate"><span class="pre">marko</span></code> library, which supports CommonMark spec v0.30 (the latest version).</p>
+</section>
+
 
            </div>
           </div>
@@ -112,14 +119,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-  <script>
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script id="searchindexloader"></script>
-   
-
+  </script> 
 
 </body>
 </html>

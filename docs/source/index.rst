@@ -11,3 +11,5 @@ WebPy is an easy-to-use Python web framework built on top of Flask that allows y
    routes
    cli
    debugreloading
+   usingpyx
+   usingmd
