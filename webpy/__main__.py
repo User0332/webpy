@@ -116,9 +116,6 @@ def build(force_debug: bool, compile_md: bool, compile_pyx: bool):
 	except AttributeError:
 		print("app object and webpy_setup function are missing from app.py!")
 
-	if force_debug: app.debug = True
-	else: app.debug = False
-
 	prerules = list(app.url_map.iter_rules())
 
 	# TODO: use TypedDict for this
@@ -151,6 +148,7 @@ app = Flask(
 )
 
 loads({dill.dumps(setup)!r})(app)
+app.debug = {True if force_debug else False}
 """
 		)
 
@@ -385,11 +383,11 @@ def main():
 
 	parser.add_argument("name", help="name to be used for 'new' or 'route' commands", default=None, nargs='?')
 
-	parser.add_argument("--no-compile-md", action="store_true")
-	parser.add_argument("--no-compile-pyx", action="store_true")
-	parser.add_argument("--no-reload-md", action="store_true")
-	parser.add_argument("--no-reload-pyx", action="store_true")
-	parser.add_argument("--force-debug", action="store_true")
+	parser.add_argument("--no-compile-md", action="store_true", help="do not compile Markdown to HTML")
+	parser.add_argument("--no-compile-pyx", action="store_true", help="do not compile PyX to Python")
+	parser.add_argument("--no-reload-md", action="store_true", help="do not check for modifications in Markdown files while running")
+	parser.add_argument("--no-reload-pyx", action="store_true", help="do not check for modifications in PyX files while running")
+	parser.add_argument("--force-debug", action="store_true", help="make sure debug mode is used")
 
 
 	args = parser.parse_args()
