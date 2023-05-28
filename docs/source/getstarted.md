@@ -81,7 +81,7 @@ First, delete the default route code.
 import webpy
 
 def handler(app: webpy.App, *args):
-  pass
+
 ```
 
 Then, return a string of HTML from the function.
@@ -91,7 +91,7 @@ Then, return a string of HTML from the function.
 import webpy
 
 def handler(app: webpy.App, *args):
-  return "<h1>Hello, World!</h1>"
++ return "<h1>Hello, World!</h1>"
 ```
 
 Start the app again using `webpy run`, and we can see our `h1` show up on `http://127.0.0.1:5000/`. For more information on how you can use programmed routes, visit the [Flask documentation](https://flask.palletsprojects.com/en/2.3.x/quickstart/) or take a look at some [examples](https://github.com/User0332/webpy-app/tree/master/root).
