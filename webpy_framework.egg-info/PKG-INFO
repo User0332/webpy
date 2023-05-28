@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: webpy-framework
-Version: 1.1.2
+Version: 1.2.0
 Summary: Easy-to-use Python web framework built on top of Flask
 Author-email: Carl Furtado <carlzfurtado@gmail.com>
 License: MIT License

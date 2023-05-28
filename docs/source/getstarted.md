@@ -69,6 +69,8 @@ from webpy.pysite_semantic_tags import * # recommended
 from pysite.tags import * # also works, but doesn't filter out unnecessary classes such as Element
 ```
 
+PyX snippets can also be imported from `webpy.pyx_snippets`. Currently, the only snippet available is `theme`, which takes in one attribute name of `name={theme-name}`. These themes are fetched from [User0332.github.io/tree/main/webpy/themes](https://github.com/User0332/User0332.github.io/tree/main/webpy/themes).
+
 ## Using Markdown With WebPy
 
 Markdown written in `.md` files anywhere in the project are transpiled to `.html` files before running or building the project. They can also be transpiled using `webpy buildmd`. This means that Markdown can even be used in the `html/` directory and accessed as an HTML template. Markdown is placed in the body of the generated HTML document, so it will look something like this:
