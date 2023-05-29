@@ -366,7 +366,7 @@ defaultrouteconf = {
 }
 
 def main():
-	parser = ArgumentParser("webpy", description="CLI for the webpy framework")
+	parser = ArgumentParser("webpy", description="CLI for the webpy framework (docs: https://webpy-framework.readthedocs.io/)")
 	parser.add_argument(
 		"command", 
 		choices=(
