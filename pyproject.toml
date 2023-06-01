@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "webpy-framework"
-version = "1.2.1"
+version = "1.3.0" ## NEW VERSION (deploy, show cmds)
 description = "Easy-to-use Python web framework built on top of Flask"
 readme = "README.md"
 authors = [{ name = "Carl Furtado", email = "carlzfurtado@gmail.com" }]
@@ -14,19 +14,44 @@ classifiers = [
 	"Programming Language :: Python",
 	"Programming Language :: Python :: 3",
     "Topic :: Text Processing :: Markup :: HTML",
-    "Operating System :: OS Independent"
+    "Operating System :: OS Independent",
+	"Topic :: Text Processing :: Markup :: Markdown",
+	"Topic :: Text Processing :: Markup :: XML",
+	"Framework :: Flask",
+	"Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+	"Topic :: Internet :: WWW/HTTP :: WSGI :: Server",
+	"Intended Audience :: Developers",
+	"Intended Audience :: Information Technology",
+	"Topic :: Text Processing :: Markup",
+	"Topic :: Software Development :: Build Tools"
 ]
-keywords = ["framework", "flask", "web"]
+keywords = [
+	"framework",
+	"flask",
+	"web",
+	"server",
+	"html",
+	"markdown",
+	"pyx",
+	"wsgi",
+	"http",
+	"xml",
+	"asgi",
+	"deployment"
+]
 dependencies = [
-	"flask >= 2.2.2",
-	"dill >= 0.3.5.1",
-	"python-minifier >= 2.8.0",
+	"flask >= 2.3.2",
+	"dill >= 0.3.6",
+	"python-minifier >= 2.9.0",
 	"dill >= 0.3.6",
 	"flask-session >= 0.5.0",
-	"flask-sqlalchemy >= 3.0.0",
+	"flask-sqlalchemy >= 3.0.3",
 	"py-domapi >= 1.0.0",
 	"pyx-pysite >= 1.0.3",
-	"marko >= 1.3.0"
+	"marko >= 1.3.0",
+	"waitress >= 2.1.2",
+	"asgiref >= 3.7.2",
+	"uvicorn >= 0.22.0"
 ]
 requires-python = ">= 3.9"
 
@@ -37,3 +62,6 @@ Documentation = "https://webpy-framework.readthedocs.io/"
 [project.scripts]
 webpy = "webpy.__main__:main"
 webpy-framework = "webpy.__main__:main"
+
+[tool.setuptools]
+packages = ["webpy"]

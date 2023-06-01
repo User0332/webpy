@@ -94,7 +94,7 @@ def buildmd():
 </html>
 """)
 
-def build(force_debug: bool, compile_md: bool, compile_pyx: bool):
+def build(force_debug: bool, compile_md: bool, compile_pyx: bool, deploying: bool=False):
 	if compile_pyx: buildpyx()
 	if compile_md: buildmd()
 
@@ -121,7 +121,7 @@ def build(force_debug: bool, compile_md: bool, compile_pyx: bool):
 	# TODO: use TypedDict for this
 	routes: dict[str, dict[str, Union[dict[str, str], bytes, str]]] = {}
 
-	if not parse_fs_routes(app, "root", routes):
+	if not parse_fs_routes(app, "root", routes, {}):
 		exit(1)
 
 	with open("build.py", 'w') as f:
@@ -195,9 +195,9 @@ app.add_url_rule(
 				f"app, {route+'_handler'!r}))\n"
 			)
 
-		code+=(f"app.run({','.join(f'{key}={value!r}' for key, value in conf.items())})")
+		if not deploying: code+=(f"app.run({','.join(f'{key}={value!r}' for key, value in conf.items())})")
 
-		f.write(minify(code, rename_globals=True))
+		f.write(minify(code, rename_globals=True) if not deploying else minify(code))
 
 def run(
 		force_debug: bool,
@@ -327,12 +327,36 @@ def route(name: str):
 		defaultroutecode
 	)
 
-def webpy_compile(force_debug: bool, compile_md: bool, compile_pyx: bool):
-	build(force_debug, compile_md, compile_pyx)
+def webpy_compile(force_debug: bool, compile_md: bool, compile_pyx: bool, deploying: bool=False):
+	build(force_debug, compile_md, compile_pyx, deploying=deploying)
+
 	compile("build.py", "build.pyc", optimize=2)
 
 	try: os.remove("build.py")
 	except FileNotFoundError: pass
+
+def deploy(force_debug: bool, compile_md: bool, compile_pyx: bool):
+	print("creating build.pyc...")
+	webpy_compile(force_debug, compile_md, compile_pyx, deploying=True)
+	print("done creating build.pyc")
+
+	print("starting app with waitress...")
+
+	conf: dict[str] = {}
+
+	if os.path.exists("config.json"):
+		with open("config.json", 'r') as f:
+			conf = load(f)
+
+	try: subproc_call(
+		[
+			"waitress-serve",
+			"--host", str(conf.get("host", "127.0.0.1")),
+			"--port", str(conf.get("port", 5000)),
+			"build:app"
+		]
+	)
+	except KeyboardInterrupt: pass
 
 def buildpyx():
 	shell = ["powershell"] if os.name == "nt" else ["bash", "-c"]
@@ -376,9 +400,11 @@ def main():
 		"route",
 		"compile",
 		"buildpyx",
-		"buildmd"
+		"buildmd",
+		"show",
+		"deploy"
 		),
-		help="Possible commands --- webpy new {projectname} (create a new project) --- webpy route {routename} (create a new route directory) --- webpy run (start the application) --- webpy build (compile root/ and app.py into build.py) --- webpy compile (like build but create build.pyc) --- webpy buildpyx (compile all .pyx to .py) --- webpy buildmd (compile all .md to .html)"
+		help="Possible commands --- webpy new {projectname} (create a new project) --- webpy route {routename} (create a new route directory) --- webpy run (start the application) --- webpy build (compile root/ and app.py into build.py) --- webpy compile (like build but create build.pyc) --- webpy buildpyx (compile all .pyx to .py) --- webpy buildmd (compile all .md to .html) --- webpy show <info> (show info about the app) --- webpy deploy (deploy the app using Waitress)"
 	)
 
 	parser.add_argument("name", help="name to be used for 'new' or 'route' commands", default=None, nargs='?')
@@ -444,6 +470,16 @@ def main():
 
 	if cmd == "buildmd":
 		buildmd()
+		exit(0)
+
+	if cmd == "show":
+		if name not in ("routes", "overview"):
+			print("webpy: error: expected extra command name to be used with 'show'\n  e.g.\n\tshow routes - view application routes\n\tshow overview - view config, app properties, and config stats")
+			exit(1)
+		pass
+
+	if cmd == "deploy":
+		deploy(force_debug, compile_md, compile_pyx)
 		exit(0)
 
 if __name__ == "__main__":
