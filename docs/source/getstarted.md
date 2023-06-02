@@ -56,8 +56,6 @@ Since we only want this route to be a simple HTML page, we can delete `index.py`
 
 Now, we can run our app using `webpy run`. Notice that when visiting `http://127.0.0.1:5000/hello`, the CSS that we linked from the `static/` folder is included.
 
-If you want to make your app a little more compact, you can use `webpy build`. This will compile all of your Python and HTML into a single minifed file, `build.py`, which can be run like a normal Python script. However, the the `html/` and `static/` directories are not packaged into the build file, so these must still be present to run `build.py`. When using `webpy run` to run the app, changes in the files under `root/` and changes in files under `static/` are guaranteed to be reflected in the app without having to restart it, but if the app is being run from a `build.py` file, changes in HTML, Python, and config files under `root/` will not be reflected.
-
 Lets modify our default route under `http://127.0.0.1:5000/`, in the directory `root/`. This time, we'll keep `index.py` and program this route in Python. The default code should look something like this:
 
 `index.py`

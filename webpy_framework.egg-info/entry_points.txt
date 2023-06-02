@@ -1,3 +1,0 @@
-[console_scripts]
-webpy = webpy.__main__:main
-webpy-framework = webpy.__main__:main

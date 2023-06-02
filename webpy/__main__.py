@@ -124,17 +124,16 @@ def build(force_debug: bool, compile_md: bool, compile_pyx: bool, deploying: boo
 	if not parse_fs_routes(app, "root", routes, {}):
 		exit(1)
 
-	with open("build.py", 'w') as f:
+	with open("webpy_build.py", 'w') as f:
 		code = ""
 		for module in conf.get("imports", tuple()):
 			code+=f"import {module}\n"
 
 		code+=(
 			f"""from dill import loads
-from webpy import appbind
-from flask import Flask
+from webpy import appbind, App
 
-app = Flask(
+app = App(
 	{app.import_name!r},
 	{app.static_url_path!r},
 	{app.static_folder!r},
@@ -160,14 +159,14 @@ app.debug = {True if force_debug else False}
 app.add_url_rule(
 	{rule.rule!r}, 
 	{rule.endpoint!r},
-	dill.loads({dill.dumps(app.view_functions[rule.endpoint])!r}),
+	loads({dill.dumps(app.view_functions[rule.endpoint])!r}),
 	methods={list(rule.methods)!r},
 	defaults={rule.defaults!r},
 	subdomain={rule.subdomain!r},
 	build_only={rule.build_only!r},
 	strict_slashes={rule.strict_slashes!r},
 	merge_slashes={rule.merge_slashes!r},
-	redirect_to=dill.loads({dill.dumps(rule.redirect_to)!r}),
+	redirect_to=loads({dill.dumps(rule.redirect_to)!r}),
 	alias={rule.alias!r},
 	host={rule.host!r},
 	websocket={rule.websocket!r}
@@ -330,15 +329,15 @@ def route(name: str):
 def webpy_compile(force_debug: bool, compile_md: bool, compile_pyx: bool, deploying: bool=False):
 	build(force_debug, compile_md, compile_pyx, deploying=deploying)
 
-	compile("build.py", "build.pyc", optimize=2)
+	compile("webpy_build.py", "webpy_build.pyc", optimize=2)
 
-	try: os.remove("build.py")
+	try: os.remove("webpy_build.py")
 	except FileNotFoundError: pass
 
 def deploy(force_debug: bool, compile_md: bool, compile_pyx: bool):
-	print("creating build.pyc...")
+	print("creating webpy_build.pyc...")
 	webpy_compile(force_debug, compile_md, compile_pyx, deploying=True)
-	print("done creating build.pyc")
+	print("done creating webpy_build.pyc")
 
 	print("starting app with waitress...")
 
@@ -353,7 +352,7 @@ def deploy(force_debug: bool, compile_md: bool, compile_pyx: bool):
 			"waitress-serve",
 			"--host", str(conf.get("host", "127.0.0.1")),
 			"--port", str(conf.get("port", 5000)),
-			"build:app"
+			"webpy_build:app"
 		]
 	)
 	except KeyboardInterrupt: pass
@@ -404,7 +403,7 @@ def main():
 		"show",
 		"deploy"
 		),
-		help="Possible commands --- webpy new {projectname} (create a new project) --- webpy route {routename} (create a new route directory) --- webpy run (start the application) --- webpy build (compile root/ and app.py into build.py) --- webpy compile (like build but create build.pyc) --- webpy buildpyx (compile all .pyx to .py) --- webpy buildmd (compile all .md to .html) --- webpy show <info> (show info about the app) --- webpy deploy (deploy the app using Waitress)"
+		help="Possible commands --- webpy new {projectname} (create a new project) --- webpy route {routename} (create a new route directory) --- webpy run (start the application) --- webpy build (compile root/ and app.py into webpy_build.py) --- webpy compile (like build but create webpy_build.pyc) --- webpy buildpyx (compile all .pyx to .py) --- webpy buildmd (compile all .md to .html) --- webpy show <info> (show info about the app) --- webpy deploy (deploy the app using Waitress)"
 	)
 
 	parser.add_argument("name", help="name to be used for 'new' or 'route' commands", default=None, nargs='?')
