@@ -37,7 +37,8 @@ keywords = [
 	"http",
 	"xml",
 	"asgi",
-	"deployment"
+	"deployment",
+	"uvicorn"
 ]
 dependencies = [
 	"flask >= 2.3.2",
