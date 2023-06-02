@@ -197,7 +197,7 @@ app.add_url_rule(
 
 		if not deploying: code+=(f"app.run({','.join(f'{key}={value!r}' for key, value in conf.items())})")
 
-		f.write(minify(code, rename_globals=True) if not deploying else minify(code))
+		f.write(minify(code, rename_globals=True) if not deploying else minify(code, rename_globals=False))
 
 def run(
 		force_debug: bool,
