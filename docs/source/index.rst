@@ -5,7 +5,7 @@ WebPy is an easy-to-use Python web framework built on top of Flask that allows y
 
 .. toctree::
    :maxdepth: 3
-   :caption: WSGI API:
+   :caption: Contents:
 
    getstarted
    routes
@@ -14,9 +14,3 @@ WebPy is an easy-to-use Python web framework built on top of Flask that allows y
    usingpyx
    usingmd
    docsref
-
-.. toctree::
-   :maxdepth: 3
-   :caption: ASGI API:
-
-   asgi-getstarted
