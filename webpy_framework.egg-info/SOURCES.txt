@@ -1,0 +1,14 @@
+LICENSE
+README.md
+pyproject.toml
+webpy/__init__.py
+webpy/__main__.py
+webpy/fs_routes.py
+webpy/pysite_semantic_tags.py
+webpy/pyx_snippets.py
+webpy_framework.egg-info/PKG-INFO
+webpy_framework.egg-info/SOURCES.txt
+webpy_framework.egg-info/dependency_links.txt
+webpy_framework.egg-info/entry_points.txt
+webpy_framework.egg-info/requires.txt
+webpy_framework.egg-info/top_level.txt

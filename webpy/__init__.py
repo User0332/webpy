@@ -5,12 +5,6 @@ from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from functools import partial
 from types import FunctionType
-from domapi import make_document_from_str
-
-def documentify(fname: str):
-	return make_document_from_str(
-		render_template(fname)
-	)
 
 def appbind(func: FunctionType, app: Flask, name: str):
 	new = partial(func, app)
